@@ -1,4 +1,4 @@
-package com.amitapi.amit_maven_plugin;
+package com.amitapi.maven.plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,6 +27,9 @@ public class AmitApiMojo extends AbstractMojo {
 	
 	@Parameter
     protected String compileFile;
+
+	@Parameter
+    protected String templateJarClass;
 	
 	@Parameter
     protected String templateUrl;
@@ -43,6 +46,7 @@ public class AmitApiMojo extends AbstractMojo {
 		if( log.isDebugEnabled() ) {
 			log.info("AmitAPI: Output: " + outputDirectory);
 			log.info("AmitAPI: Source: " + sourceDirectory);
+			log.info("AmitAPI: Template Path: " + templateUrl);
 		}	
 			
 		if ( !sourceDirectory.isDirectory() ) {
@@ -74,7 +78,7 @@ public class AmitApiMojo extends AbstractMojo {
 			Project project = parser.parse();
 			
 			CodeGenerator generator = new CodeGenerator( 
-					project, templateUrl, outputDirectory.toString() );
+					project, templateJarClass, templateUrl, outputDirectory.toString() );
 			
 			generator.generate(); 
 		} catch( Exception e ) {
