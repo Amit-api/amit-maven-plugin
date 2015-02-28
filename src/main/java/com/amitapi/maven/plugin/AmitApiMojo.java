@@ -32,7 +32,7 @@ public class AmitApiMojo extends AbstractMojo {
     protected String templateJarClass;
 	
 	@Parameter
-    protected String templateUrl;
+    protected String templateName;
 	
 	@Parameter(defaultValue = "${project.build.directory}/generated-sources/amit")
 	private File outputDirectory;
@@ -46,7 +46,7 @@ public class AmitApiMojo extends AbstractMojo {
 		if( log.isDebugEnabled() ) {
 			log.info("AmitAPI: Output: " + outputDirectory);
 			log.info("AmitAPI: Source: " + sourceDirectory);
-			log.info("AmitAPI: Template Path: " + templateUrl);
+			log.info("AmitAPI: Template Path: " + templateName);
 		}	
 			
 		if ( !sourceDirectory.isDirectory() ) {
@@ -65,7 +65,7 @@ public class AmitApiMojo extends AbstractMojo {
 			throw new MojoExecutionException( error );
 		}
 
-		if( templateUrl == null || templateUrl.isEmpty() ) {
+		if( templateName == null || templateName.isEmpty() ) {
 			String error = "AmitAPI templateUrl is not set";
 			log.error( error );
 			throw new MojoExecutionException( error );
@@ -78,7 +78,7 @@ public class AmitApiMojo extends AbstractMojo {
 			Project project = parser.parse();
 			
 			CodeGenerator generator = new CodeGenerator( 
-					project, templateJarClass, templateUrl, outputDirectory.toString() );
+					project, templateJarClass, templateName, outputDirectory.toString() );
 			
 			generator.generate(); 
 		} catch( Exception e ) {
