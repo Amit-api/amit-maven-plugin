@@ -1,3 +1,17 @@
+/******************************************************************************
+ * Copyright 20014-2015 Alexandru Motriuc                                     *
+ *                                                                            *
+ ******************************************************************************
+ * Licensed under the Apache License, Version 2.0 (the "License");            *
+ * you may not use this file except in compliance with the License.           *
+ * You may obtain a copy of the License at                                    *
+ * http://www.apache.org/licenses/LICENSE-2.0                                 *
+ * Unless required by applicable law or agreed to in writing, software        *
+ * distributed under the License is distributed on an "AS IS" BASIS,          *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   *
+ * See the License for the specific language governing permissions and        *
+ * limitations under the License.                                             *
+ ******************************************************************************/
 package com.amitapi.maven.plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -16,23 +30,29 @@ import com.amit.api.compiler.parser.AmitParser;
 import java.io.File;
 import java.nio.file.Paths;
 
+/**
+ * AmitApi mojo 
+ */
 @Mojo(name = "amit", 
 	defaultPhase = LifecyclePhase.GENERATE_SOURCES,
 	requiresDependencyResolution = ResolutionScope.COMPILE, 
 	requiresProject = true)
 public class AmitApiMojo extends AbstractMojo {
-
+	
 	@Parameter(defaultValue = "${basedir}/src/main/amit")
 	private File sourceDirectory;
 	
 	@Parameter
-    protected String compileFile;
-
-	@Parameter
-    protected String templateJarClass;
+	protected String compileFile;
 	
 	@Parameter
-    protected String templateName;
+	protected String compileJarClass;
+
+	@Parameter
+	protected String templateJarClass;
+	
+	@Parameter
+	protected String templateName;
 	
 	@Parameter(defaultValue = "${project.build.directory}/generated-sources/amit")
 	private File outputDirectory;
@@ -71,10 +91,17 @@ public class AmitApiMojo extends AbstractMojo {
 			throw new MojoExecutionException( error );
 		}
 		
-		String pathToFile = Paths.get( sourceDirectory.getAbsolutePath().toString(), compileFile ).toString();
 		
 		try {
-			AmitParser parser = AmitParser.fromFile( pathToFile );
+			AmitParser parser = null;
+			
+			if( compileJarClass == null || compileJarClass.isEmpty() ) {
+				String pathToFile = Paths.get( sourceDirectory.getAbsolutePath().toString(), compileFile ).toString();
+				parser = AmitParser.fromFile( pathToFile );
+			} else {
+				parser = AmitParser.fromJar( compileJarClass, compileFile );
+			}
+			
 			Project project = parser.parse();
 			
 			CodeGenerator generator = new CodeGenerator( 
