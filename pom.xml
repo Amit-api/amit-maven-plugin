@@ -4,7 +4,7 @@
 	<groupId>com.amitapi</groupId>
 	<artifactId>amit-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>3.0.0</version>
+	<version>3.1.0</version>
 	<name>amit-maven-plugin Maven Mojo</name>
 	<description>Amit API compiler</description>
 	<url>https://github.com/Amit-api</url>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>com.amitapi</groupId>
 			<artifactId>amit-compiler</artifactId>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
 
 		<dependency>
